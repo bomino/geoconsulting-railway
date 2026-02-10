@@ -1,6 +1,10 @@
 import environ
 from pathlib import Path
 
+from django.templatetags.static import static
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 env = environ.Env()
@@ -70,6 +74,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "apps.core.context_processors.company_info",
             ],
         },
     },
@@ -126,3 +131,118 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
     "django.contrib.auth.hashers.ScryptPasswordHasher",
 ]
+
+UNFOLD = {
+    "SITE_TITLE": "GeoConsulting Admin",
+    "SITE_HEADER": "GeoConsulting",
+    "SITE_SUBHEADER": "Administration",
+    "SITE_URL": "/",
+    "SITE_SYMBOL": "engineering",
+    "SHOW_HISTORY": True,
+    "SHOW_VIEW_ON_SITE": True,
+    "BORDER_RADIUS": "6px",
+    "COLORS": {
+        "primary": {
+            "50": "#E8EEF6",
+            "100": "#D1DDED",
+            "200": "#A3BBD8",
+            "300": "#7599C4",
+            "400": "#4777AF",
+            "500": "#2A5298",
+            "600": "#22447D",
+            "700": "#1B3A6B",
+            "800": "#142D54",
+            "900": "#0D1F3D",
+            "950": "#081428",
+        },
+    },
+    "SIDEBAR": {
+        "show_search": True,
+        "show_all_applications": False,
+        "navigation": [
+            {
+                "title": _("Gestion du site"),
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Tableau de bord"),
+                        "icon": "dashboard",
+                        "link": reverse_lazy("admin:index"),
+                    },
+                    {
+                        "title": _("Utilisateurs"),
+                        "icon": "people",
+                        "link": reverse_lazy("admin:accounts_user_changelist"),
+                    },
+                    {
+                        "title": _("Paramètres du site"),
+                        "icon": "settings",
+                        "link": reverse_lazy("admin:core_sitesetting_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": _("Contenu"),
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Projets"),
+                        "icon": "construction",
+                        "link": reverse_lazy("admin:projects_project_changelist"),
+                    },
+                    {
+                        "title": _("Articles"),
+                        "icon": "article",
+                        "link": reverse_lazy("admin:articles_article_changelist"),
+                    },
+                    {
+                        "title": _("FAQ"),
+                        "icon": "help",
+                        "link": reverse_lazy("admin:core_faq_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": _("Relations clients"),
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Contacts"),
+                        "icon": "mail",
+                        "link": reverse_lazy("admin:contacts_contact_changelist"),
+                    },
+                    {
+                        "title": _("Portail client"),
+                        "icon": "account_circle",
+                        "link": reverse_lazy("admin:portal_clientproject_changelist"),
+                    },
+                    {
+                        "title": _("Modèles email"),
+                        "icon": "drafts",
+                        "link": reverse_lazy("admin:crm_emailtemplate_changelist"),
+                    },
+                    {
+                        "title": _("Règles d'attribution"),
+                        "icon": "assignment",
+                        "link": reverse_lazy("admin:crm_assignmentrule_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": _("Système"),
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Journal d'audit"),
+                        "icon": "security",
+                        "link": reverse_lazy("admin:audit_auditlog_changelist"),
+                    },
+                ],
+            },
+        ],
+    },
+}

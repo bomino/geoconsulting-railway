@@ -4,16 +4,147 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="GéoConsulting SARLU — La qualité au service du développement durable. Bureau d'études géotechniques et laboratoire au Niger.">
   <title>{% block title %}GeoConsulting SARLU{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/output.css' %}">
   {% block extra_css %}{% endblock %}
 </head>
-<body class="min-h-screen bg-white text-gray-900 antialiased">
-  {% block body %}
+<body class="flex min-h-screen flex-col bg-white text-gray-900 antialiased"
+      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+
+  {# ── Header / Navigation ── #}
+  <header class="bg-primary-700 text-white" x-data="{ open: false }">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
+      <a href="{% url 'home' %}" class="flex items-center gap-2">
+        <img src="{% static 'img/logo.png' %}" alt="GéoConsulting" class="h-10 w-auto" onerror="this.style.display='none'">
+        <span class="text-lg font-bold tracking-wide">GéoConsulting</span>
+      </a>
+
+      {# Desktop nav #}
+      <nav class="hidden items-center gap-6 text-sm font-medium lg:flex">
+        {% include "partials/_nav_links.html" %}
+      </nav>
+
+      {# Auth link (desktop) #}
+      <div class="hidden items-center gap-4 text-sm lg:flex">
+        {% if user.is_authenticated %}
+          {% if user.is_staff %}
+            <a href="{% url 'admin:index' %}" class="hover:text-secondary-300">Admin</a>
+          {% endif %}
+          <a href="/portail/" class="rounded bg-secondary-700 px-3 py-1.5 text-white hover:bg-secondary-600">Mon espace</a>
+        {% else %}
+          <a href="{% url 'account_login' %}" class="hover:text-secondary-300">Connexion</a>
+        {% endif %}
+      </div>
+
+      {# Hamburger button (mobile) #}
+      <button @click="open = !open" class="lg:hidden" aria-label="Menu">
+        <svg x-show="!open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        <svg x-show="open" x-cloak class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    {# Mobile nav #}
+    <div x-show="open" x-cloak
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 -translate-y-2"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="opacity-100 translate-y-0"
+         x-transition:leave-end="opacity-0 -translate-y-2"
+         class="border-t border-primary-600 bg-primary-800 px-4 py-4 lg:hidden">
+      <nav class="flex flex-col gap-3 text-sm font-medium">
+        {% include "partials/_nav_links.html" %}
+        <hr class="border-primary-600">
+        {% if user.is_authenticated %}
+          <a href="/portail/" class="hover:text-secondary-300">Mon espace</a>
+          {% if user.is_staff %}
+            <a href="{% url 'admin:index' %}" class="hover:text-secondary-300">Admin</a>
+          {% endif %}
+        {% else %}
+          <a href="{% url 'account_login' %}" class="hover:text-secondary-300">Connexion</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  {# ── Flash Messages ── #}
+  {% include "partials/_messages.html" %}
+
+  {# ── Main Content ── #}
   <main class="flex-1">
     {% block content %}{% endblock %}
   </main>
-  {% endblock %}
+
+  {# ── Footer ── #}
+  <footer class="bg-primary-800 text-white">
+    <div class="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        {# Col 1: Company #}
+        <div>
+          <h3 class="mb-3 text-lg font-bold">GéoConsulting SARLU</h3>
+          <p class="mb-2 text-sm text-primary-200">La qualité au service du développement durable</p>
+          <p class="text-sm text-primary-300">Bureau d'études et laboratoire géotechnique. Certifié ISO 9001:2015.</p>
+        </div>
+
+        {# Col 2: Navigation #}
+        <div>
+          <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-primary-300">Navigation</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="{% url 'home' %}" class="text-secondary-400 hover:text-white">Accueil</a></li>
+            <li><a href="/a-propos/" class="text-secondary-400 hover:text-white">À propos</a></li>
+            <li><a href="/services/" class="text-secondary-400 hover:text-white">Services</a></li>
+            <li><a href="/projets/" class="text-secondary-400 hover:text-white">Projets</a></li>
+            <li><a href="/actualites/" class="text-secondary-400 hover:text-white">Actualités</a></li>
+            <li><a href="/contact/" class="text-secondary-400 hover:text-white">Contact</a></li>
+            <li><a href="/faq/" class="text-secondary-400 hover:text-white">FAQ</a></li>
+          </ul>
+        </div>
+
+        {# Col 3: Contact #}
+        <div>
+          <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-primary-300">Contact</h3>
+          <ul class="space-y-2 text-sm text-primary-200">
+            <li>Tchangarey, Niamey, Niger</li>
+            <li><a href="tel:+22790535323" class="text-secondary-400 hover:text-white">+227 90 53 53 23</a></li>
+            <li><a href="tel:+22782242420" class="text-secondary-400 hover:text-white">+227 82 24 24 20</a></li>
+            <li><a href="mailto:info@mygeoconsulting.com" class="text-secondary-400 hover:text-white">info@mygeoconsulting.com</a></li>
+          </ul>
+        </div>
+
+        {# Col 4: Hours #}
+        <div>
+          <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-primary-300">Horaires</h3>
+          <p class="text-sm text-primary-200">Lundi au vendredi</p>
+          <p class="text-sm text-primary-200">8h20 — 17h00</p>
+        </div>
+      </div>
+
+      <div class="mt-10 border-t border-primary-700 pt-6 text-center text-sm text-primary-400">
+        &copy; {% now "Y" %} GéoConsulting SARLU. Tous droits réservés.
+      </div>
+    </div>
+  </footer>
+
+  {# ── WhatsApp Floating Button ── #}
+  <a href="https://wa.me/22790535323" target="_blank" rel="noopener noreferrer"
+     class="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-secondary-600 text-white shadow-lg transition hover:bg-secondary-700 hover:shadow-xl"
+     aria-label="Contacter via WhatsApp">
+    <svg class="h-7 w-7" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+
+  {# ── Chatbot Widget Placeholder ── #}
+  <div id="chatbot-widget"></div>
+
+  {# ── Scripts ── #}
+  <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.4/dist/htmx.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js" defer></script>
   {% block extra_js %}{% endblock %}
 </body>
 </html>

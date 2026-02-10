@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}{{ service.name }} — GeoConsulting SARLU{% endblock %}
+
+{% block content %}
+{# ── Hero ── #}
+<section class="bg-primary-700 py-16 text-white">
+  <div class="mx-auto max-w-4xl px-4 text-center">
+    <h1 class="mb-4 text-4xl font-bold">{{ service.name }}</h1>
+    <p class="text-lg text-primary-200">{{ service.short }}</p>
+  </div>
+</section>
+
+{# ── Service Items ── #}
+<section class="py-16">
+  <div class="mx-auto max-w-4xl px-4 lg:px-8">
+    <div class="rounded-lg border border-gray-200 bg-white p-8 shadow-sm">
+      <h2 class="mb-6 text-2xl font-bold text-primary-700">Détails du service</h2>
+      <ul class="space-y-3">
+        {% for item in service.items %}
+        <li class="flex items-start gap-3">
+          <svg class="mt-0.5 h-5 w-5 flex-shrink-0 text-secondary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          <span class="text-gray-700">{{ item }}</span>
+        </li>
+        {% empty %}
+        <li class="text-gray-500">Aucun détail disponible pour ce service.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="mt-8 flex flex-wrap items-center gap-4">
+      <a href="/services/" class="inline-flex items-center gap-1 text-sm font-medium text-primary-700 hover:underline">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        Retour aux services
+      </a>
+      <a href="/contact/" class="inline-block rounded bg-secondary-700 px-6 py-2.5 text-sm font-medium text-white hover:bg-secondary-600">
+        Demander un devis
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

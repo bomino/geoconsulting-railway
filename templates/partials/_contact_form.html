@@ -1,0 +1,90 @@
+{# Rendered inside <form> tag in contact.html — also used for HTMX re-render on validation errors #}
+
+{% if form.non_field_errors %}
+<div class="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+  {% for error in form.non_field_errors %}
+  <p>{{ error }}</p>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="grid gap-5 sm:grid-cols-2">
+  {# Name #}
+  <div>
+    <label for="{{ form.name.id_for_label }}" class="mb-1 block text-sm font-medium text-gray-700">
+      Nom complet <span class="text-red-500">*</span>
+    </label>
+    <input type="text" name="{{ form.name.html_name }}" id="{{ form.name.id_for_label }}"
+           value="{{ form.name.value|default:'' }}"
+           class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 {% if form.name.errors %}border-red-400{% endif %}"
+           placeholder="Votre nom" required>
+    {% if form.name.errors %}
+    <p class="mt-1 text-xs text-red-600">{{ form.name.errors.0 }}</p>
+    {% endif %}
+  </div>
+
+  {# Email #}
+  <div>
+    <label for="{{ form.email.id_for_label }}" class="mb-1 block text-sm font-medium text-gray-700">
+      Email <span class="text-red-500">*</span>
+    </label>
+    <input type="email" name="{{ form.email.html_name }}" id="{{ form.email.id_for_label }}"
+           value="{{ form.email.value|default:'' }}"
+           class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 {% if form.email.errors %}border-red-400{% endif %}"
+           placeholder="votre@email.com" required>
+    {% if form.email.errors %}
+    <p class="mt-1 text-xs text-red-600">{{ form.email.errors.0 }}</p>
+    {% endif %}
+  </div>
+
+  {# Phone #}
+  <div>
+    <label for="{{ form.phone.id_for_label }}" class="mb-1 block text-sm font-medium text-gray-700">
+      Téléphone
+    </label>
+    <input type="tel" name="{{ form.phone.html_name }}" id="{{ form.phone.id_for_label }}"
+           value="{{ form.phone.value|default:'' }}"
+           class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 {% if form.phone.errors %}border-red-400{% endif %}"
+           placeholder="+227 XX XX XX XX">
+    {% if form.phone.errors %}
+    <p class="mt-1 text-xs text-red-600">{{ form.phone.errors.0 }}</p>
+    {% endif %}
+  </div>
+
+  {# Subject #}
+  <div>
+    <label for="{{ form.subject.id_for_label }}" class="mb-1 block text-sm font-medium text-gray-700">
+      Objet <span class="text-red-500">*</span>
+    </label>
+    <input type="text" name="{{ form.subject.html_name }}" id="{{ form.subject.id_for_label }}"
+           value="{{ form.subject.value|default:'' }}"
+           class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 {% if form.subject.errors %}border-red-400{% endif %}"
+           placeholder="Objet de votre message" required>
+    {% if form.subject.errors %}
+    <p class="mt-1 text-xs text-red-600">{{ form.subject.errors.0 }}</p>
+    {% endif %}
+  </div>
+</div>
+
+{# Message #}
+<div class="mt-5">
+  <label for="{{ form.message.id_for_label }}" class="mb-1 block text-sm font-medium text-gray-700">
+    Message <span class="text-red-500">*</span>
+  </label>
+  <textarea name="{{ form.message.html_name }}" id="{{ form.message.id_for_label }}" rows="5"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 {% if form.message.errors %}border-red-400{% endif %}"
+            placeholder="Décrivez votre projet ou votre demande..." required>{{ form.message.value|default:'' }}</textarea>
+  {% if form.message.errors %}
+  <p class="mt-1 text-xs text-red-600">{{ form.message.errors.0 }}</p>
+  {% endif %}
+</div>
+
+{# Honeypot #}
+<input type="hidden" name="{{ form.company_fax.html_name }}" value="">
+
+<div class="mt-6">
+  <button type="submit"
+          class="rounded bg-primary-700 px-6 py-2.5 text-sm font-medium text-white hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+    Envoyer le message
+  </button>
+</div>

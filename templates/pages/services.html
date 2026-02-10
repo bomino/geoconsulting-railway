@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Nos Services — GeoConsulting SARLU{% endblock %}
+
+{% block content %}
+{# ── Hero ── #}
+<section class="bg-primary-700 py-16 text-white">
+  <div class="mx-auto max-w-4xl px-4 text-center">
+    <h1 class="mb-4 text-4xl font-bold">Nos Services</h1>
+    <p class="text-lg text-primary-200">Études, suivi-contrôle et essais laboratoire au service de vos projets</p>
+  </div>
+</section>
+
+{# ── Service Cards ── #}
+<section class="py-16">
+  <div class="mx-auto max-w-7xl px-4 lg:px-8">
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {% for service in services %}
+      <div class="flex flex-col rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+        <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary-50">
+          <span class="text-lg font-bold text-primary-700">{{ forloop.counter }}</span>
+        </div>
+        <h2 class="mb-3 text-xl font-bold text-primary-700">{{ service.name }}</h2>
+        <p class="mb-6 flex-1 text-sm text-gray-600">{{ service.short }}</p>
+        <a href="/services/{{ service.slug }}/"
+           class="inline-flex items-center gap-1 text-sm font-medium text-primary-700 hover:underline">
+          En savoir plus
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+      {% empty %}
+      <p class="col-span-full text-center text-gray-500">Aucun service disponible pour le moment.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# ── CTA ── #}
+<section class="bg-gray-50 py-16">
+  <div class="mx-auto max-w-3xl px-4 text-center">
+    <h2 class="mb-4 text-2xl font-bold text-primary-700">Besoin d'un devis ?</h2>
+    <p class="mb-6 text-gray-600">Contactez-nous pour discuter de votre projet et obtenir une estimation personnalisée.</p>
+    <a href="/contact/" class="inline-block rounded bg-secondary-700 px-6 py-2.5 text-sm font-medium text-white hover:bg-secondary-600">
+      Nous contacter
+    </a>
+  </div>
+</section>
+{% endblock %}
