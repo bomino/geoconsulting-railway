@@ -208,6 +208,16 @@ UNFOLD = {
                         "link": reverse_lazy("admin:core_teammember_changelist"),
                     },
                     {
+                        "title": _("Départements"),
+                        "icon": "corporate_fare",
+                        "link": reverse_lazy("admin:core_department_changelist"),
+                    },
+                    {
+                        "title": _("Divisions"),
+                        "icon": "account_tree",
+                        "link": reverse_lazy("admin:core_division_changelist"),
+                    },
+                    {
                         "title": _("Paramètres du site"),
                         "icon": "settings",
                         "link": reverse_lazy("admin:core_sitesetting_changelist"),

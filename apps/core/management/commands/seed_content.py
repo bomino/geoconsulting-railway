@@ -12,8 +12,7 @@ from django.utils.text import slugify
 
 from apps.accounts.models import User
 from apps.articles.models import Article
-from apps.core.enums import Department, Division
-from apps.core.models import FAQ, FAQCategory, SiteSetting, TeamMember
+from apps.core.models import FAQ, Department, Division, FAQCategory, SiteSetting, TeamMember
 from apps.projects.models import Project
 
 DEFAULT_REPO_DIR = (
@@ -412,12 +411,28 @@ EXTRA_FAQS = [
     },
 ]
 
+DEPARTMENT_SEED = [
+    {"name": "Direction Générale", "slug": "direction", "order": 0, "is_direction": True},
+    {"name": "Recherche, Innovation, Qualité", "slug": "recherche", "order": 1},
+    {"name": "Administratif", "slug": "admin", "order": 2},
+    {"name": "Études, Maîtrise d'Oeuvre, Contrôles Extérieurs", "slug": "etudes", "order": 3},
+    {"name": "Laboratoire", "slug": "laboratoire", "order": 4},
+]
+
+DIVISION_SEED = [
+    {"name": "Ressource Humaine, Communication, Marketing", "slug": "rh-comm", "dept_slug": "admin", "order": 1},
+    {"name": "Comptable et Développement", "slug": "comptable", "dept_slug": "admin", "order": 2},
+    {"name": "Béton", "slug": "beton", "dept_slug": "laboratoire", "order": 1},
+    {"name": "Environnement, Hydrogéologie, Pédologie, Bitume", "slug": "environnement", "dept_slug": "laboratoire", "order": 2},
+    {"name": "Géotechnique Routière et Bâtiment", "slug": "geotechnique", "dept_slug": "laboratoire", "order": 3},
+]
+
 TEAM_MEMBERS = [
     {
         "first_name": "Issaka Galadima",
         "last_name": "Moustapha",
         "role": "Directeur Général",
-        "department": Department.DIRECTION,
+        "dept_slug": "direction",
         "email": "info@mygeoconsulting.com",
         "phone": "+227 90 53 53 23",
         "order": 1,
@@ -426,60 +441,60 @@ TEAM_MEMBERS = [
         "first_name": "Amadou",
         "last_name": "Boubacar",
         "role": "Directeur Technique",
-        "department": Department.DIRECTION,
+        "dept_slug": "direction",
         "order": 2,
     },
     {
         "first_name": "Fatima",
         "last_name": "Abdou",
         "role": "Ingénieure d'Études",
-        "department": Department.ETUDES,
+        "dept_slug": "etudes",
         "order": 1,
     },
     {
         "first_name": "Moussa",
         "last_name": "Ibrahim",
         "role": "Ingénieur Géotechnicien",
-        "department": Department.ETUDES,
+        "dept_slug": "etudes",
         "order": 2,
     },
     {
         "first_name": "Aïchatou",
         "last_name": "Mahamane",
         "role": "Chargée d'Études Environnementales",
-        "department": Department.ETUDES,
+        "dept_slug": "etudes",
         "order": 3,
     },
     {
         "first_name": "Abdoulaye",
         "last_name": "Souley",
         "role": "Chef de Laboratoire",
-        "department": Department.LABORATOIRE,
-        "division": Division.GEOTECHNIQUE,
+        "dept_slug": "laboratoire",
+        "div_slug": "geotechnique",
         "order": 1,
     },
     {
         "first_name": "Hama",
         "last_name": "Garba",
         "role": "Technicien Essais",
-        "department": Department.LABORATOIRE,
-        "division": Division.BETON,
+        "dept_slug": "laboratoire",
+        "div_slug": "beton",
         "order": 2,
     },
     {
         "first_name": "Mariama",
         "last_name": "Ousmane",
         "role": "Responsable Administrative",
-        "department": Department.ADMIN,
-        "division": Division.RH_COMM,
+        "dept_slug": "admin",
+        "div_slug": "rh-comm",
         "order": 1,
     },
     {
         "first_name": "Sani",
         "last_name": "Adamou",
         "role": "Comptable",
-        "department": Department.ADMIN,
-        "division": Division.COMPTABLE,
+        "dept_slug": "admin",
+        "div_slug": "comptable",
         "order": 2,
     },
 ]
@@ -732,7 +747,31 @@ class Command(BaseCommand):
                 self.stdout.write(f"  OK {filename} ->{key}")
 
     def _seed_team_members(self):
-        self.stdout.write("\n--- Team Members ---")
+        self.stdout.write("\n--- Departments + Divisions + Team Members ---")
+
+        dept_map = {}
+        for d in DEPARTMENT_SEED:
+            if self.dry_run:
+                self.stdout.write(f"  WOULD create dept: {d['name']}")
+            else:
+                dept, _ = Department.objects.get_or_create(
+                    slug=d["slug"], defaults=d,
+                )
+                dept_map[dept.slug] = dept
+                self.stdout.write(f"  OK dept: {dept.name}")
+
+        div_map = {}
+        for d in DIVISION_SEED:
+            if self.dry_run:
+                self.stdout.write(f"  WOULD create div: {d['name']}")
+            else:
+                dept = dept_map[d["dept_slug"]]
+                div, _ = Division.objects.get_or_create(
+                    slug=d["slug"],
+                    defaults={"name": d["name"], "department": dept, "order": d["order"]},
+                )
+                div_map[div.slug] = div
+                self.stdout.write(f"  OK div: {div.name}")
 
         if not self.dry_run:
             deleted = TeamMember.objects.all().delete()[0]
@@ -741,19 +780,20 @@ class Command(BaseCommand):
 
         created = 0
         for member_data in TEAM_MEMBERS:
+            data = {k: v for k, v in member_data.items() if k not in ("dept_slug", "div_slug")}
             if self.dry_run:
                 self.stdout.write(
-                    f"  WOULD create: {member_data['first_name']} "
-                    f"{member_data['last_name']} -{member_data['role']}"
+                    f"  WOULD create: {data['first_name']} "
+                    f"{data['last_name']} -{data['role']}"
                 )
             else:
-                TeamMember.objects.create(
-                    published=True,
-                    **member_data,
-                )
+                data["department"] = dept_map[member_data["dept_slug"]]
+                if "div_slug" in member_data:
+                    data["division"] = div_map[member_data["div_slug"]]
+                TeamMember.objects.create(published=True, **data)
                 self.stdout.write(
-                    f"  OK {member_data['first_name']} "
-                    f"{member_data['last_name']} -{member_data['role']}"
+                    f"  OK {data['first_name']} "
+                    f"{data['last_name']} -{data['role']}"
                 )
             created += 1
 

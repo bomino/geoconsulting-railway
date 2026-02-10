@@ -29,7 +29,7 @@ La barre laterale est organisee en **4 sections** :
 
 | Section | Contenu |
 |---------|---------|
-| Gestion du site | Tableau de bord, utilisateurs, equipe, parametres, ce guide |
+| Gestion du site | Tableau de bord, utilisateurs, equipe, departements, divisions, parametres, ce guide |
 | Contenu | Projets, articles, FAQ |
 | Relations clients | Contacts, portail client, modeles email, regles d'attribution |
 | Systeme | Journal d'audit |
@@ -137,18 +137,55 @@ Le champ "Ordre" est editable directement dans la liste. Les FAQ sont triees par
 
 ---
 
-## 6. Equipe
-
-**Accessible via** : Gestion du site -> Equipe
+## 6. Equipe, departements et divisions
 
 Les membres apparaissent dans l'organigramme sur `/a-propos/`.
 
 ### Departements
 
-- **Direction** — Direction generale (affichee en haut de l'organigramme)
-- **Etudes** — Bureau d'etudes techniques
-- **Laboratoire** — Essais et controles
-- **Admin** — Administration et comptabilite
+**Accessible via** : Gestion du site -> Departements
+
+Les departements structurent l'organigramme. Chaque departement a un nom, un slug (genere automatiquement), un ordre d'affichage et un statut de publication.
+
+| Champ | Description |
+|-------|-------------|
+| Nom | Nom du departement (unique) |
+| Slug | Identifiant URL, genere automatiquement a partir du nom |
+| Ordre | Position dans l'organigramme (0 = premier) |
+| Direction | Si coche, le departement est affiche en haut de l'organigramme (un seul autorise) |
+| Publie | Visible sur le site public si coche |
+
+> **Regle** : Un seul departement peut etre marque comme "Direction". Tenter d'en marquer un deuxieme provoquera une erreur de validation.
+
+### Divisions
+
+**Accessible via** : Gestion du site -> Divisions
+
+Les divisions subdivisent un departement. Elles apparaissent comme sous-blocs dans l'organigramme.
+
+| Champ | Description |
+|-------|-------------|
+| Nom | Nom de la division (unique par departement) |
+| Slug | Identifiant URL, genere automatiquement |
+| Departement | Departement parent (selection avec recherche) |
+| Ordre | Position dans le departement (0 = premier) |
+| Publie | Visible sur le site public si coche |
+
+### Membres de l'equipe
+
+**Accessible via** : Gestion du site -> Equipe
+
+Chaque membre est rattache a un departement (obligatoire) et optionnellement a une division.
+
+| Champ | Description |
+|-------|-------------|
+| Departement | Departement du membre (selection avec recherche) |
+| Division | Division du membre, optionnelle (selection avec recherche) |
+| Role | Intitule du poste (texte libre) |
+
+> **Validation** : La division selectionnee doit appartenir au departement selectionne. Un message d'erreur s'affiche en cas d'incoherence.
+
+> **Protection** : Il est impossible de supprimer un departement qui contient des membres. Reassigner les membres avant de supprimer le departement.
 
 ### Photo
 
@@ -156,7 +193,7 @@ La photo est automatiquement redimensionnee a 100x100 pixels lors de l'enregistr
 
 ### Ordre d'affichage
 
-Le champ "Ordre" est editable dans la liste. Les membres sont tries par departement, puis par ordre, puis par nom.
+Le champ "Ordre" est editable dans la liste pour les departements, divisions et membres. Les membres sont tries par departement, puis par division, puis par ordre, puis par nom.
 
 ---
 

@@ -2,8 +2,12 @@ import pytest
 from django.test import Client
 
 from apps.accounts.factories import UserFactory
-from apps.core.enums import Department
-from apps.core.factories import FAQFactory, SiteSettingFactory, TeamMemberFactory
+from apps.core.factories import (
+    DepartmentFactory,
+    FAQFactory,
+    SiteSettingFactory,
+    TeamMemberFactory,
+)
 from apps.core.models import FAQCategory
 from apps.projects.factories import ProjectFactory
 
@@ -49,9 +53,18 @@ class TestAboutView:
         assert response.context["politique_qualite"] is not None
 
     def test_about_context_team_members(self):
-        TeamMemberFactory(department=Department.DIRECTION)
-        TeamMemberFactory(department=Department.ETUDES)
-        TeamMemberFactory(department=Department.LABORATOIRE)
+        from apps.core.models import Department, Division
+
+        Division.objects.all().delete()
+        Department.objects.all().delete()
+        direction = DepartmentFactory(name="Direction", is_direction=True, order=0)
+        DepartmentFactory(name="Recherche", order=1)
+        DepartmentFactory(name="Administratif", order=2)
+        etudes = DepartmentFactory(name="Études", order=3)
+        labo = DepartmentFactory(name="Laboratoire", order=4)
+        TeamMemberFactory(department=direction)
+        TeamMemberFactory(department=etudes)
+        TeamMemberFactory(department=labo)
         response = self.client.get("/a-propos/")
         assert len(response.context["direction"]) == 1
         org_chart = response.context["org_chart"]

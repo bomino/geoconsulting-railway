@@ -1,12 +1,12 @@
 from io import BytesIO
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.db import models
 from django.utils import timezone
 from PIL import Image
 
-from apps.core.enums import Department, Division
 from apps.core.validators import validate_image_file
 
 TEAM_PHOTO_MAX_SIZE = 100
@@ -93,12 +93,63 @@ class FAQ(TimestampMixin):
         return self.question
 
 
+class Department(TimestampMixin):
+    name = models.CharField(max_length=150, unique=True)
+    slug = models.SlugField(max_length=150, unique=True)
+    order = models.PositiveIntegerField(default=0)
+    is_direction = models.BooleanField(
+        default=False,
+        help_text="Affiché en haut de l'organigramme, pas dans la grille",
+    )
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["order", "name"]
+        verbose_name = "Département"
+        verbose_name_plural = "Départements"
+
+    def __str__(self):
+        return self.name
+
+    def clean(self):
+        if self.is_direction:
+            qs = Department.objects.filter(is_direction=True).exclude(pk=self.pk)
+            if qs.exists():
+                raise ValidationError(
+                    {"is_direction": "Un seul département peut être marqué comme direction."}
+                )
+
+
+class Division(TimestampMixin):
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, unique=True)
+    department = models.ForeignKey(
+        Department, on_delete=models.CASCADE, related_name="divisions"
+    )
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["department", "order", "name"]
+        unique_together = [("department", "name")]
+        verbose_name = "Division"
+        verbose_name_plural = "Divisions"
+
+    def __str__(self):
+        return self.name
+
+
 class TeamMember(TimestampMixin):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     role = models.CharField(max_length=150)
-    department = models.CharField(max_length=20, choices=Department.choices)
-    division = models.CharField(max_length=20, choices=Division.choices, blank=True)
+    department = models.ForeignKey(
+        Department, on_delete=models.PROTECT, related_name="members",
+    )
+    division = models.ForeignKey(
+        Division, on_delete=models.SET_NULL, related_name="members",
+        null=True, blank=True,
+    )
     photo = models.ImageField(upload_to="team/", blank=True, validators=[validate_image_file])
     bio = models.TextField(blank=True)
     email = models.EmailField(blank=True)
@@ -107,9 +158,15 @@ class TeamMember(TimestampMixin):
     published = models.BooleanField(default=True)
 
     class Meta:
-        ordering = ["department", "division", "order", "last_name"]
+        ordering = ["department__order", "division__order", "order", "last_name"]
         verbose_name = "Membre de l'équipe"
         verbose_name_plural = "Membres de l'équipe"
+
+    def clean(self):
+        if self.division and self.division.department_id != self.department_id:
+            raise ValidationError(
+                {"division": "La division doit appartenir au département sélectionné."}
+            )
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

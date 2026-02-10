@@ -27,22 +27,6 @@ class AccessLevel(models.TextChoices):
     EDIT = "edit", "Édition"
 
 
-class Department(models.TextChoices):
-    DIRECTION = "direction", "Direction Générale"
-    RECHERCHE = "recherche", "Recherche, Innovation, Qualité"
-    ADMIN = "admin", "Administratif"
-    ETUDES = "etudes", "Études, Maîtrise d'Oeuvre, Contrôles Extérieurs"
-    LABORATOIRE = "laboratoire", "Laboratoire"
-
-
-class Division(models.TextChoices):
-    RH_COMM = "rh_comm", "Ressource Humaine, Communication, Marketing"
-    COMPTABLE = "comptable", "Comptable et Développement"
-    BETON = "beton", "Béton"
-    ENVIRONNEMENT = "environnement", "Environnement, Hydrogéologie, Pédologie, Bitume"
-    GEOTECHNIQUE = "geotechnique", "Géotechnique Routière et Bâtiment"
-
-
 class TemplateCategory(models.TextChoices):
     QUOTE = "quote_request", "Demande de devis"
     INQUIRY = "project_inquiry", "Demande projet"

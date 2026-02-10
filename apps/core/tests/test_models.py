@@ -2,8 +2,12 @@ import pytest
 from django.db import IntegrityError
 
 from apps.accounts.factories import UserFactory
-from apps.core.enums import Department
-from apps.core.factories import FAQFactory, SiteSettingFactory, TeamMemberFactory
+from apps.core.factories import (
+    DepartmentFactory,
+    FAQFactory,
+    SiteSettingFactory,
+    TeamMemberFactory,
+)
 from apps.core.models import FAQ, FAQCategory, SiteSetting, TeamMember
 
 
@@ -69,9 +73,11 @@ class TestTeamMember:
 
     def test_ordering(self):
         TeamMember.objects.all().delete()
-        m2 = TeamMemberFactory(department=Department.ETUDES, order=1, last_name="B")
-        m1 = TeamMemberFactory(department=Department.DIRECTION, order=0, last_name="A")
-        m3 = TeamMemberFactory(department=Department.ETUDES, order=0, last_name="A")
+        dept_a = DepartmentFactory(order=0)
+        dept_b = DepartmentFactory(order=1)
+        m2 = TeamMemberFactory(department=dept_b, order=1, last_name="B")
+        m1 = TeamMemberFactory(department=dept_a, order=0, last_name="A")
+        m3 = TeamMemberFactory(department=dept_b, order=0, last_name="A")
         result = list(TeamMember.objects.all())
         assert result == [m1, m3, m2]
 

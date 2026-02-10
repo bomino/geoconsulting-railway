@@ -4,9 +4,10 @@ from django.contrib.postgres.search import SearchQuery, SearchRank
 from django.http import Http404
 from django.views.generic import ListView, TemplateView
 
+from django.db import models as db_models
+
 from apps.articles.models import Article
-from apps.core.enums import Department, Division
-from apps.core.models import FAQ, FAQCategory, SiteSetting, TeamMember
+from apps.core.models import FAQ, Department, Division, FAQCategory, SiteSetting, TeamMember
 from apps.projects.models import Project
 
 SERVICES = [
@@ -52,13 +53,6 @@ SERVICES = [
 
 SERVICES_BY_SLUG = {s["slug"]: s for s in SERVICES}
 
-ORG_STRUCTURE = [
-    {"dept": Department.RECHERCHE, "divisions": []},
-    {"dept": Department.ADMIN, "divisions": [Division.RH_COMM, Division.COMPTABLE]},
-    {"dept": Department.ETUDES, "divisions": []},
-    {"dept": Department.LABORATOIRE, "divisions": [Division.BETON, Division.ENVIRONNEMENT, Division.GEOTECHNIQUE]},
-]
-
 
 class HomeView(TemplateView):
     template_name = "pages/home.html"
@@ -84,26 +78,47 @@ class AboutView(TemplateView):
         context["organigramme"] = site_settings.get("organigramme_image")
         context["politique_qualite"] = site_settings.get("politique_qualite_image")
 
-        team_members = list(TeamMember.objects.filter(published=True))
-        context["direction"] = [m for m in team_members if m.department == Department.DIRECTION]
+        team_members = list(
+            TeamMember.objects.filter(published=True)
+            .select_related("department", "division")
+        )
+
+        direction_dept = Department.objects.filter(
+            is_direction=True, published=True
+        ).first()
+        context["direction"] = [
+            m for m in team_members
+            if direction_dept and m.department_id == direction_dept.pk
+        ]
+
+        grid_departments = (
+            Department.objects.filter(published=True, is_direction=False)
+            .prefetch_related(
+                db_models.Prefetch(
+                    "divisions",
+                    queryset=Division.objects.filter(published=True),
+                )
+            )
+            .order_by("order")
+        )
 
         org_chart = []
-        for entry in ORG_STRUCTURE:
-            dept = entry["dept"]
-            dept_members = [m for m in team_members if m.department == dept.value]
+        for dept in grid_departments:
+            dept_members = [m for m in team_members if m.department_id == dept.pk]
+            dept_divisions = list(dept.divisions.all())
 
-            if entry["divisions"]:
+            if dept_divisions:
                 divisions_data = []
-                for div in entry["divisions"]:
-                    div_members = [m for m in dept_members if m.division == div.value]
-                    divisions_data.append({"label": div.label, "members": div_members})
-                unassigned = [m for m in dept_members if not m.division]
+                for div in dept_divisions:
+                    div_members = [m for m in dept_members if m.division_id == div.pk]
+                    divisions_data.append({"label": div.name, "members": div_members})
+                unassigned = [m for m in dept_members if m.division_id is None]
             else:
                 divisions_data = []
                 unassigned = dept_members
 
             org_chart.append({
-                "label": dept.label,
+                "label": dept.name,
                 "divisions": divisions_data,
                 "members": unassigned,
             })

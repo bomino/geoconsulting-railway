@@ -23,7 +23,7 @@
       <li><a href="#projets" @click="activeSection = '#projets'" class="block py-1 px-2 rounded transition" :class="activeSection === '#projets' ? 'bg-primary-50 text-primary-700 font-medium dark:bg-primary-900/30 dark:text-primary-300' : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200'">3. Projets</a></li>
       <li><a href="#articles" @click="activeSection = '#articles'" class="block py-1 px-2 rounded transition" :class="activeSection === '#articles' ? 'bg-primary-50 text-primary-700 font-medium dark:bg-primary-900/30 dark:text-primary-300' : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200'">4. Articles</a></li>
       <li><a href="#faq" @click="activeSection = '#faq'" class="block py-1 px-2 rounded transition" :class="activeSection === '#faq' ? 'bg-primary-50 text-primary-700 font-medium dark:bg-primary-900/30 dark:text-primary-300' : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200'">5. FAQ</a></li>
-      <li><a href="#equipe" @click="activeSection = '#equipe'" class="block py-1 px-2 rounded transition" :class="activeSection === '#equipe' ? 'bg-primary-50 text-primary-700 font-medium dark:bg-primary-900/30 dark:text-primary-300' : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200'">6. Equipe</a></li>
+      <li><a href="#equipe" @click="activeSection = '#equipe'" class="block py-1 px-2 rounded transition" :class="activeSection === '#equipe' ? 'bg-primary-50 text-primary-700 font-medium dark:bg-primary-900/30 dark:text-primary-300' : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200'">6. Equipe & organigramme</a></li>
       <li><a href="#contacts-crm" @click="activeSection = '#contacts-crm'" class="block py-1 px-2 rounded transition" :class="activeSection === '#contacts-crm' ? 'bg-primary-50 text-primary-700 font-medium dark:bg-primary-900/30 dark:text-primary-300' : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200'">7. Contacts & CRM</a></li>
       <li><a href="#portail-client" @click="activeSection = '#portail-client'" class="block py-1 px-2 rounded transition" :class="activeSection === '#portail-client' ? 'bg-primary-50 text-primary-700 font-medium dark:bg-primary-900/30 dark:text-primary-300' : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200'">8. Portail client</a></li>
       <li><a href="#chatbot" @click="activeSection = '#chatbot'" class="block py-1 px-2 rounded transition" :class="activeSection === '#chatbot' ? 'bg-primary-50 text-primary-700 font-medium dark:bg-primary-900/30 dark:text-primary-300' : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200'">9. Chatbot IA</a></li>
@@ -61,7 +61,7 @@
           <tbody>
             <tr class="border-b border-gray-100 dark:border-gray-800">
               <td class="py-2 px-3 font-medium">Gestion du site</td>
-              <td class="py-2 px-3">Tableau de bord, utilisateurs, equipe, parametres, ce guide</td>
+              <td class="py-2 px-3">Tableau de bord, utilisateurs, equipe, departements, divisions, parametres, ce guide</td>
             </tr>
             <tr class="border-b border-gray-100 dark:border-gray-800">
               <td class="py-2 px-3 font-medium">Contenu</td>
@@ -209,28 +209,74 @@
       </div>
     </section>
 
-    {# ==================== 6. EQUIPE ==================== #}
+    {# ==================== 6. EQUIPE & ORGANIGRAMME ==================== #}
     <section id="equipe">
       <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
         <span class="material-symbols-outlined text-primary-700">groups</span>
-        6. Equipe
+        6. Equipe, departements et divisions
       </h2>
       <div class="space-y-4 text-sm text-gray-700 dark:text-gray-300">
-        <p>Accessible via <strong>Gestion du site &rarr; Equipe</strong>. Les membres apparaissent dans l'organigramme sur <code>/a-propos/</code>.</p>
+        <p>Les membres apparaissent dans l'organigramme sur <code>/a-propos/</code>. La structure organisationnelle (departements, divisions) est entierement configurable depuis l'administration.</p>
 
         <h3 class="font-semibold text-gray-800 dark:text-gray-200">Departements</h3>
-        <ul class="ml-4 list-disc space-y-1">
-          <li><strong>Direction</strong> — Direction generale (affichee en haut de l'organigramme)</li>
-          <li><strong>Etudes</strong> — Bureau d'etudes techniques</li>
-          <li><strong>Laboratoire</strong> — Essais et controles</li>
-          <li><strong>Admin</strong> — Administration et comptabilite</li>
-        </ul>
+        <p>Accessible via <strong>Gestion du site &rarr; Departements</strong>. Les departements structurent l'organigramme.</p>
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-gray-200 dark:border-gray-700">
+              <th class="text-left py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Champ</th>
+              <th class="text-left py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-gray-100 dark:border-gray-800"><td class="py-2 px-3">Nom</td><td class="py-2 px-3">Nom du departement (unique)</td></tr>
+            <tr class="border-b border-gray-100 dark:border-gray-800"><td class="py-2 px-3">Slug</td><td class="py-2 px-3">Identifiant URL, genere automatiquement</td></tr>
+            <tr class="border-b border-gray-100 dark:border-gray-800"><td class="py-2 px-3">Ordre</td><td class="py-2 px-3">Position dans l'organigramme (0 = premier)</td></tr>
+            <tr class="border-b border-gray-100 dark:border-gray-800"><td class="py-2 px-3">Direction</td><td class="py-2 px-3">Si coche, affiche en haut de l'organigramme (un seul autorise)</td></tr>
+            <tr><td class="py-2 px-3">Publie</td><td class="py-2 px-3">Visible sur le site public si coche</td></tr>
+          </tbody>
+        </table>
+
+        <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+          <p class="font-medium text-amber-800 dark:text-amber-300">Regle</p>
+          <p class="text-amber-700 dark:text-amber-400">Un seul departement peut etre marque comme "Direction". Tenter d'en marquer un deuxieme provoquera une erreur de validation.</p>
+        </div>
+
+        <h3 class="font-semibold text-gray-800 dark:text-gray-200">Divisions</h3>
+        <p>Accessible via <strong>Gestion du site &rarr; Divisions</strong>. Les divisions subdivisent un departement et apparaissent comme sous-blocs dans l'organigramme.</p>
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-gray-200 dark:border-gray-700">
+              <th class="text-left py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Champ</th>
+              <th class="text-left py-2 px-3 font-medium text-gray-700 dark:text-gray-300">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-gray-100 dark:border-gray-800"><td class="py-2 px-3">Nom</td><td class="py-2 px-3">Nom de la division (unique par departement)</td></tr>
+            <tr class="border-b border-gray-100 dark:border-gray-800"><td class="py-2 px-3">Slug</td><td class="py-2 px-3">Identifiant URL, genere automatiquement</td></tr>
+            <tr class="border-b border-gray-100 dark:border-gray-800"><td class="py-2 px-3">Departement</td><td class="py-2 px-3">Departement parent (selection avec recherche)</td></tr>
+            <tr class="border-b border-gray-100 dark:border-gray-800"><td class="py-2 px-3">Ordre</td><td class="py-2 px-3">Position dans le departement (0 = premier)</td></tr>
+            <tr><td class="py-2 px-3">Publie</td><td class="py-2 px-3">Visible sur le site public si coche</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="font-semibold text-gray-800 dark:text-gray-200">Membres de l'equipe</h3>
+        <p>Accessible via <strong>Gestion du site &rarr; Equipe</strong>. Chaque membre est rattache a un departement (obligatoire) et optionnellement a une division.</p>
+
+        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+          <p class="font-medium text-blue-800 dark:text-blue-300">Validation</p>
+          <p class="text-blue-700 dark:text-blue-400">La division selectionnee doit appartenir au departement selectionne. Un message d'erreur s'affiche en cas d'incoherence.</p>
+        </div>
+
+        <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+          <p class="font-medium text-amber-800 dark:text-amber-300">Protection</p>
+          <p class="text-amber-700 dark:text-amber-400">Il est impossible de supprimer un departement qui contient des membres. Reassigner les membres avant de supprimer le departement.</p>
+        </div>
 
         <h3 class="font-semibold text-gray-800 dark:text-gray-200">Photo</h3>
         <p>La photo est automatiquement redimensionnee a 100x100 pixels lors de l'enregistrement. Formats acceptes : JPEG, PNG.</p>
 
         <h3 class="font-semibold text-gray-800 dark:text-gray-200">Ordre d'affichage</h3>
-        <p>Le champ "Ordre" est editable dans la liste. Les membres sont tries par departement, puis par ordre, puis par nom.</p>
+        <p>Le champ "Ordre" est editable dans la liste pour les departements, divisions et membres. Les membres sont tries par departement, puis par division, puis par ordre, puis par nom.</p>
       </div>
     </section>
 
