@@ -5,6 +5,7 @@ from django.db import models
 from django.utils import timezone
 
 from apps.core.models import TimestampMixin
+from apps.core.validators import validate_image_file
 
 
 class Article(TimestampMixin):
@@ -12,7 +13,7 @@ class Article(TimestampMixin):
     slug = models.SlugField(max_length=255, unique=True)
     excerpt = models.TextField(blank=True)
     content = models.TextField(help_text="Contenu en Markdown")
-    image = models.ImageField(upload_to="articles/images/", blank=True)
+    image = models.ImageField(upload_to="articles/images/", blank=True, validators=[validate_image_file])
     category = models.CharField(max_length=100, blank=True)
     published = models.BooleanField(default=False)
     published_at = models.DateTimeField(null=True, blank=True)

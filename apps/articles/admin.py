@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.core.cache import cache
 from django.utils import timezone
 from unfold.admin import ModelAdmin
 
@@ -20,3 +21,4 @@ class ArticleAdmin(ModelAdmin):
         if not obj.published:
             obj.published_at = None
         super().save_model(request, obj, form, change)
+        cache.clear()

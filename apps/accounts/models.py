@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 
 from apps.core.models import SoftDeleteManager, SoftDeleteMixin, TimestampMixin
+from apps.core.validators import validate_image_file
 
 
 class SoftDeleteUserManager(SoftDeleteManager, UserManager):
@@ -30,7 +31,7 @@ class Profile(TimestampMixin):
         related_name="profile",
     )
     phone = models.CharField(max_length=50, blank=True)
-    avatar = models.ImageField(upload_to="avatars/", blank=True)
+    avatar = models.ImageField(upload_to="avatars/", blank=True, validators=[validate_image_file])
 
     def __str__(self):
         return self.user.get_full_name() or self.user.email

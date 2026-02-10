@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.core.cache import cache
 from unfold.admin import ModelAdmin, TabularInline
 
 from apps.projects.models import Project, ProjectDocument
@@ -39,6 +40,7 @@ class ProjectAdmin(ModelAdmin):
         if not obj.pk:
             obj.created_by = request.user
         super().save_model(request, obj, form, change)
+        cache.clear()
 
 
 @admin.register(ProjectDocument)

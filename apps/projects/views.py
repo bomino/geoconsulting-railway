@@ -1,9 +1,12 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic import DetailView, ListView
 
 from apps.core.enums import ProjectCategory
 from apps.projects.models import Project
 
 
+@method_decorator(cache_page(60), name="dispatch")
 class ProjectListView(ListView):
     model = Project
     template_name = "projects/list.html"

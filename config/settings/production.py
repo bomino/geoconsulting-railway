@@ -14,6 +14,10 @@ SECURE_HSTS_PRELOAD = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 STORAGES = {
     "default": {
@@ -25,6 +29,8 @@ STORAGES = {
             "endpoint_url": f"https://{env('R2_ACCOUNT_ID', default='')}.r2.cloudflarestorage.com",
             "default_acl": "private",
             "file_overwrite": False,
+            "querystring_auth": True,
+            "querystring_expire": 3600,
         },
     },
     "staticfiles": {

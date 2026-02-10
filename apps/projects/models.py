@@ -6,6 +6,7 @@ from django.urls import reverse
 
 from apps.core.enums import ProjectCategory, ProjectStatus
 from apps.core.models import TimestampMixin
+from apps.core.validators import validate_document_file, validate_image_file
 
 
 class Project(TimestampMixin):
@@ -18,7 +19,7 @@ class Project(TimestampMixin):
     location = models.CharField(max_length=255, blank=True)
     client_name = models.CharField(max_length=255, blank=True)
     year = models.PositiveIntegerField(null=True, blank=True)
-    image = models.ImageField(upload_to="projects/images/", blank=True)
+    image = models.ImageField(upload_to="projects/images/", blank=True, validators=[validate_image_file])
     published = models.BooleanField(default=True)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="created_projects")
     search_vector = SearchVectorField(null=True)
@@ -41,7 +42,7 @@ class ProjectDocument(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="documents")
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    file = models.FileField(upload_to="projects/documents/%Y/%m/")
+    file = models.FileField(upload_to="projects/documents/%Y/%m/", validators=[validate_document_file])
     category = models.CharField(max_length=100, blank=True, help_text="Plans, Rapports, Photos, etc.")
     uploaded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
