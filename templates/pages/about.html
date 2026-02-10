@@ -1,31 +1,36 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}À propos — GeoConsulting SARLU{% endblock %}
+{% block title %}Qui Sommes-Nous — GeoConsulting SARLU{% endblock %}
 
 {% block content %}
 {# ── Hero ── #}
-<section class="bg-primary-700 py-16 text-white">
-  <div class="mx-auto max-w-4xl px-4 text-center">
-    <h1 class="mb-4 text-4xl font-bold">À propos</h1>
-    <p class="text-lg text-primary-200">Découvrez GéoConsulting, notre équipe et nos engagements qualité</p>
+<section class="hero-gradient hero-pattern relative overflow-hidden py-20 text-white lg:py-24">
+  <div class="pointer-events-none absolute inset-0">
+    <div class="absolute -right-16 -top-16 h-56 w-56 rounded-full border border-white/10 animate-float"></div>
+    <div class="absolute -bottom-10 left-10 h-40 w-40 rounded-full border border-white/5" style="animation:float 8s ease-in-out 2s infinite"></div>
+  </div>
+  <div class="relative mx-auto max-w-4xl px-4 text-center">
+    <h1 class="mb-4 text-4xl font-extrabold tracking-tight animate-fade-up sm:text-5xl">Qui Sommes-Nous</h1>
+    <p class="text-lg text-primary-100/90 animate-fade-up" style="animation-delay:200ms">Découvrez GéoConsulting, notre équipe et nos engagements qualité</p>
   </div>
 </section>
 
 {# ── Jump links ── #}
-<nav class="border-b border-gray-200 bg-white">
-  <div class="mx-auto flex max-w-7xl items-center justify-center gap-6 px-4 py-3 text-sm font-medium">
-    <a href="#presentation" class="text-primary-700 hover:underline">Présentation</a>
-    <a href="#equipe" class="text-primary-700 hover:underline">Équipe</a>
-    <a href="#organigramme" class="text-primary-700 hover:underline">Organigramme</a>
-    <a href="#politique-qualite" class="text-primary-700 hover:underline">Politique Qualité</a>
+<nav class="sticky top-16 z-30 border-b border-gray-200 bg-white/95 backdrop-blur-sm">
+  <div class="mx-auto flex max-w-7xl items-center justify-center gap-2 px-4 py-3 text-sm font-medium sm:gap-6">
+    <a href="#presentation" class="rounded-lg px-3 py-1.5 text-primary-700 transition hover:bg-primary-50">Présentation</a>
+    <a href="#equipe" class="rounded-lg px-3 py-1.5 text-primary-700 transition hover:bg-primary-50">Équipe</a>
+    <a href="#organigramme" class="rounded-lg px-3 py-1.5 text-primary-700 transition hover:bg-primary-50">Organigramme</a>
+    <a href="#politique-qualite" class="rounded-lg px-3 py-1.5 text-primary-700 transition hover:bg-primary-50">Politique Qualité</a>
   </div>
 </nav>
 
 {# ── Présentation ── #}
-<section id="presentation" class="py-16">
-  <div class="mx-auto max-w-4xl px-4 lg:px-8">
-    <h2 class="mb-8 text-3xl font-bold text-primary-700">Présentation</h2>
-    <div class="space-y-4 text-gray-700">
+<section id="presentation" class="scroll-mt-32 py-20">
+  <div class="mx-auto max-w-4xl px-4 lg:px-8" x-data x-intersect.once="$el.classList.add('animate-fade-up')">
+    <h2 class="section-divider mb-8 text-3xl font-bold text-primary-800">Présentation</h2>
+    <div class="space-y-4 text-gray-700 leading-relaxed">
       <p>
         Géo-Consulting, depuis sa création s'est mis dans un processus de certification ISO 9001.
         GéoConsulting vise à fournir à ses clients des services de la plus haute qualité possible.
@@ -38,7 +43,7 @@
         de Contrôles et Essais.
       </p>
     </div>
-    <div class="mt-6 inline-flex items-center gap-2 rounded-lg border border-secondary-200 bg-secondary-50 px-4 py-2 text-sm font-medium text-secondary-700">
+    <div class="mt-6 inline-flex items-center gap-2 rounded-xl border border-secondary-200 bg-secondary-50 px-5 py-2.5 text-sm font-semibold text-secondary-700">
       <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
       </svg>
@@ -48,71 +53,135 @@
 </section>
 
 {# ── Équipe ── #}
-<section id="equipe" class="bg-gray-50 py-16">
-  <div class="mx-auto max-w-4xl px-4 lg:px-8">
-    <h2 class="mb-8 text-3xl font-bold text-primary-700">Notre Équipe</h2>
-    <div class="rounded-lg border border-gray-200 bg-white p-8 shadow-sm">
-      <h3 class="mb-4 text-xl font-semibold text-primary-700">Mots du Directeur</h3>
-      <p class="mb-4 text-gray-700">
-        GéoConsulting est un bureau d'étude doté d'un laboratoire. GéoConsulting depuis sa création en 2011,
-        il s'est donné comme slogan « la qualité au service du développement durable ».
-      </p>
-      <p class="mb-4 text-gray-700">
-        Notre objectif est de fournir des prestations de bonne qualité en étude et contrôle dans les domaines suivants :
-      </p>
-      <ul class="mb-4 list-inside list-disc space-y-1 text-gray-700">
-        <li>Les infrastructures routières</li>
-        <li>Bâtiments</li>
-        <li>L'hydrauliques Alimentation en Eau Potable</li>
-        <li>Les aménagements hydro-agricoles</li>
-      </ul>
-      <p class="mb-4 text-gray-700">
-        GéoConsulting dispose d'un personnel expérimenté et d'un réseau d'expert sur lequel, il s'appuie.
-        GéoConsulting œuvre pour les administrations publiques, les organisations internationales et les entreprises privées.
-      </p>
-      <p class="mb-2 text-gray-700">Bonne visite.</p>
-      <p class="mb-6 text-gray-700">Merci de nous faire confiance.</p>
-      <div class="border-t border-gray-200 pt-4">
-        <p class="font-semibold text-primary-700">Issaka Galadima Moustapha</p>
-        <p class="text-sm text-gray-500">Directeur Général</p>
+<section id="equipe" class="scroll-mt-32 bg-gray-50/50 py-20">
+  <div class="mx-auto max-w-4xl px-4 lg:px-8" x-data x-intersect.once="$el.classList.add('animate-fade-up')">
+    <h2 class="section-divider mb-8 text-3xl font-bold text-primary-800">Notre Équipe</h2>
+    <div class="relative rounded-2xl border border-gray-100 bg-white p-8 shadow-sm lg:p-10">
+      <svg class="absolute -top-4 left-8 h-14 w-14 text-primary-100" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.731-9.57 8.983-10.609L9.978 5.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H0z"/></svg>
+      <div class="relative">
+        <h3 class="mb-4 text-xl font-bold text-primary-800">Mots du Directeur</h3>
+        <p class="mb-4 text-gray-700 leading-relaxed">
+          GéoConsulting est un bureau d'étude doté d'un laboratoire. GéoConsulting depuis sa création en 2011,
+          il s'est donné comme slogan « la qualité au service du développement durable ».
+        </p>
+        <p class="mb-4 text-gray-600">
+          Notre objectif est de fournir des prestations de bonne qualité en étude et contrôle dans les domaines suivants :
+        </p>
+        <ul class="mb-4 list-inside list-disc space-y-1 text-gray-600">
+          <li>Les infrastructures routières</li>
+          <li>Bâtiments</li>
+          <li>L'hydrauliques Alimentation en Eau Potable</li>
+          <li>Les aménagements hydro-agricoles</li>
+        </ul>
+        <p class="mb-4 text-gray-600">
+          GéoConsulting dispose d'un personnel expérimenté et d'un réseau d'expert sur lequel, il s'appuie.
+          GéoConsulting œuvre pour les administrations publiques, les organisations internationales et les entreprises privées.
+        </p>
+        <p class="mb-2 text-gray-600">Bonne visite.</p>
+        <p class="mb-6 text-gray-600">Merci de nous faire confiance.</p>
+        <div class="flex items-center gap-4 border-t border-gray-100 pt-6">
+          <img src="{% static 'img/DG_Pic.jpeg' %}" alt="Issaka Galadima Moustapha" class="h-14 w-14 rounded-full object-cover">
+          <div>
+            <p class="font-bold text-primary-800">Issaka Galadima Moustapha</p>
+            <p class="text-sm text-gray-500">Directeur Général</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 {# ── Organigramme ── #}
-<section id="organigramme" class="py-16">
-  <div class="mx-auto max-w-4xl px-4 lg:px-8">
-    <h2 class="mb-8 text-3xl font-bold text-primary-700">Organigramme</h2>
-    {% if organigramme_image and organigramme_image.image %}
-    <div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
-      <img src="{{ organigramme_image.image.url }}" alt="Organigramme de GéoConsulting"
-           class="w-full object-contain">
-    </div>
-    {% else %}
-    <div class="flex items-center justify-center rounded-lg border border-gray-200 bg-white p-12 shadow-sm">
-      <div class="text-center">
-        <svg class="mx-auto mb-4 h-16 w-16 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-        </svg>
-        <p class="text-gray-500">L'organigramme sera disponible prochainement.</p>
+<section id="organigramme" class="scroll-mt-32 py-20">
+  <div class="mx-auto max-w-6xl px-4 lg:px-8" x-data x-intersect.once="$el.classList.add('animate-fade-up')">
+    <h2 class="section-divider mb-10 text-3xl font-bold text-primary-800">Organigramme</h2>
+    {% if direction or departments %}
+
+      {% if direction %}
+      <div class="flex flex-col items-center">
+        {% for member in direction %}
+        <div class="{% if not forloop.first %}mt-4{% endif %} w-full max-w-xs rounded-2xl border-2 border-primary-200 bg-white p-5 text-center shadow-md">
+          {% if member.photo %}
+            <img src="{{ member.photo.url }}" alt="{{ member.full_name }}" class="mx-auto mb-3 h-20 w-20 rounded-full object-cover ring-3 ring-primary-100">
+          {% else %}
+            <div class="mx-auto mb-3 flex h-20 w-20 items-center justify-center rounded-full bg-primary-700 text-lg font-bold text-white ring-3 ring-primary-200">{{ member.initials }}</div>
+          {% endif %}
+          <p class="font-bold text-gray-900">{{ member.full_name }}</p>
+          <p class="text-sm text-primary-600">{{ member.role }}</p>
+        </div>
+        {% if not forloop.last %}
+        <div class="h-6 w-0.5 bg-primary-300"></div>
+        {% endif %}
+        {% endfor %}
       </div>
-    </div>
+      {% endif %}
+
+      {% if departments %}
+      <div class="flex justify-center">
+        <div class="h-10 w-0.5 bg-primary-300"></div>
+      </div>
+
+      <div class="relative">
+        <div class="absolute left-1/2 top-0 hidden h-0.5 -translate-x-1/2 bg-primary-300 lg:block" style="width: calc(100% - 100% / {{ departments|length }})"></div>
+
+        <div class="grid gap-8 lg:grid-cols-{{ departments|length }}">
+          {% for dept_label, members in departments.items %}
+          <div class="flex flex-col items-center">
+            <div class="hidden h-8 w-0.5 bg-primary-300 lg:block"></div>
+
+            <div class="mb-4 w-full rounded-xl bg-primary-700 px-4 py-2.5 text-center">
+              <h3 class="text-sm font-semibold tracking-wide text-white">{{ dept_label }}</h3>
+            </div>
+
+            <div class="w-full space-y-3">
+              {% for member in members %}
+              <div class="flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-3.5 shadow-sm transition hover:shadow-md">
+                {% if member.photo %}
+                  <img src="{{ member.photo.url }}" alt="{{ member.full_name }}" class="h-11 w-11 shrink-0 rounded-full object-cover">
+                {% else %}
+                  <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary-100 text-xs font-bold text-primary-700">{{ member.initials }}</div>
+                {% endif %}
+                <div class="min-w-0">
+                  <p class="truncate text-sm font-semibold text-gray-900">{{ member.full_name }}</p>
+                  <p class="truncate text-xs text-gray-500">{{ member.role }}</p>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+    {% elif organigramme and organigramme.image %}
+      <div class="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
+        <img src="{{ organigramme.image.url }}" alt="Organigramme de GéoConsulting" class="w-full object-contain">
+      </div>
+    {% else %}
+      <div class="flex items-center justify-center rounded-2xl border border-gray-100 bg-white p-16 shadow-sm">
+        <div class="text-center">
+          <svg class="mx-auto mb-4 h-16 w-16 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+          </svg>
+          <p class="text-gray-500">L'organigramme sera disponible prochainement.</p>
+        </div>
+      </div>
     {% endif %}
   </div>
 </section>
 
 {# ── Politique Qualité ── #}
-<section id="politique-qualite" class="bg-gray-50 py-16">
-  <div class="mx-auto max-w-4xl px-4 lg:px-8">
-    <h2 class="mb-8 text-3xl font-bold text-primary-700">Politique Qualité</h2>
+<section id="politique-qualite" class="scroll-mt-32 bg-gray-50/50 py-20">
+  <div class="mx-auto max-w-4xl px-4 lg:px-8" x-data x-intersect.once="$el.classList.add('animate-fade-up')">
+    <h2 class="section-divider mb-8 text-3xl font-bold text-primary-800">Politique Qualité</h2>
     {% if politique_qualite_image and politique_qualite_image.image %}
-    <div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+    <div class="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
       <img src="{{ politique_qualite_image.image.url }}" alt="Politique Qualité de GéoConsulting"
            class="w-full object-contain">
     </div>
     {% else %}
-    <div class="flex items-center justify-center rounded-lg border border-gray-200 bg-white p-12 shadow-sm">
+    <div class="flex items-center justify-center rounded-2xl border border-gray-100 bg-white p-16 shadow-sm">
       <div class="text-center">
         <svg class="mx-auto mb-4 h-16 w-16 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>

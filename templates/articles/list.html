@@ -4,17 +4,21 @@
 
 {% block content %}
 {# -- Hero -- #}
-<section class="bg-primary-700 py-16 text-white">
-  <div class="mx-auto max-w-4xl px-4 text-center">
-    <h1 class="mb-4 text-4xl font-bold">Actualités</h1>
-    <p class="text-lg text-primary-200">Suivez les dernières nouvelles et réalisations de GéoConsulting</p>
+<section class="hero-gradient hero-pattern relative overflow-hidden py-20 text-white lg:py-24">
+  <div class="pointer-events-none absolute inset-0">
+    <div class="absolute -right-16 -top-16 h-56 w-56 rounded-full border border-white/10 animate-float"></div>
+    <div class="absolute -bottom-10 left-10 h-40 w-40 rounded-full border border-white/5" style="animation:float 8s ease-in-out 2s infinite"></div>
+  </div>
+  <div class="relative mx-auto max-w-4xl px-4 text-center">
+    <h1 class="mb-4 text-4xl font-extrabold tracking-tight animate-fade-up sm:text-5xl">Actualités</h1>
+    <p class="text-lg text-primary-100/90 animate-fade-up" style="animation-delay:200ms">Suivez les dernières nouvelles et réalisations de GéoConsulting</p>
   </div>
 </section>
 
 {# -- Article Grid -- #}
-<section class="py-16">
+<section class="py-20 lg:py-24">
   <div class="mx-auto max-w-7xl px-4 lg:px-8">
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
       {% for article in page_obj %}
         {% include "partials/_article_card.html" with article=article %}
       {% empty %}
@@ -24,30 +28,34 @@
 
     {# Pagination #}
     {% if page_obj.has_other_pages %}
-    <nav class="mt-12 flex items-center justify-center gap-2" aria-label="Pagination">
+    <nav class="mt-14 flex items-center justify-center gap-2" aria-label="Pagination">
       {% if page_obj.has_previous %}
       <a href="?page={{ page_obj.previous_page_number }}"
-         class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+         class="group inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm transition hover:border-primary-300 hover:text-primary-700">
+        <svg class="h-4 w-4 transition-transform group-hover:-translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
         Précédent
       </a>
       {% else %}
-      <span class="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-400">
+      <span class="inline-flex items-center gap-1 rounded-lg border border-gray-100 px-4 py-2.5 text-sm font-medium text-gray-300">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
         Précédent
       </span>
       {% endif %}
 
-      <span class="px-4 py-2 text-sm text-gray-600">
+      <span class="px-4 py-2 text-sm font-medium text-gray-600">
         Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
       </span>
 
       {% if page_obj.has_next %}
       <a href="?page={{ page_obj.next_page_number }}"
-         class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+         class="group inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm transition hover:border-primary-300 hover:text-primary-700">
         Suivant
+        <svg class="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </a>
       {% else %}
-      <span class="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-400">
+      <span class="inline-flex items-center gap-1 rounded-lg border border-gray-100 px-4 py-2.5 text-sm font-medium text-gray-300">
         Suivant
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </span>
       {% endif %}
     </nav>

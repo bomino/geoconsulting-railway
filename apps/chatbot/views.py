@@ -4,7 +4,6 @@ import logging
 from django.http import JsonResponse, StreamingHttpResponse
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
 from django_ratelimit.decorators import ratelimit
 
 from apps.chatbot.prompt import build_system_prompt
@@ -21,7 +20,6 @@ MAX_MESSAGE_LENGTH = 2000
 MAX_HISTORY_ENTRIES = 50
 
 
-@method_decorator(csrf_exempt, name="dispatch")
 @method_decorator(ratelimit(key="ip", rate="20/5m", method="POST", block=True), name="dispatch")
 class ChatbotView(View):
     def post(self, request):

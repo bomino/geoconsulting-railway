@@ -17,6 +17,6 @@ INTERNAL_IPS = ["127.0.0.1"]
 
 CONTENT_SECURITY_POLICY = {
     "DIRECTIVES": {
-        "default-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        "default-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.jsdelivr.net"],
     }
 }

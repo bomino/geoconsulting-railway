@@ -65,6 +65,9 @@ class ContactAdmin(ModelAdmin):
     readonly_fields = ("name", "email", "phone", "subject", "message", "created_at")
     actions = [mark_read, mark_in_progress, mark_resolved, archive_contacts, export_contacts_csv]
 
+    def get_queryset(self, request):
+        return super().get_queryset(request).prefetch_related("assignments__assigned_to")
+
     def changelist_view(self, request, extra_context=None):
         extra_context = extra_context or {}
         extra_context["pending_count"] = Contact.objects.filter(status=ContactStatus.PENDING).count()
@@ -75,7 +78,7 @@ class ContactAdmin(ModelAdmin):
 
     @admin.display(description="Assigné à")
     def assigned_to_display(self, obj):
-        assignment = obj.assignments.select_related("assigned_to").first()
+        assignment = obj.assignments.all().first()
         if assignment:
             return assignment.assigned_to.get_full_name() or assignment.assigned_to.username
         return "-"

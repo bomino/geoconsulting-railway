@@ -22,17 +22,21 @@ def render_markdown(value):
     return mark_safe(cleaned)
 
 
+ACTIVE_CLS = "text-primary-700 bg-primary-50/70 font-semibold"
+INACTIVE_CLS = "text-gray-600 hover:text-primary-700 hover:bg-gray-50"
+
+
 @register.simple_tag(takes_context=True)
 def active_nav(context, url_name):
     request = context.get("request")
     if request is None:
-        return ""
+        return INACTIVE_CLS
     try:
         url_path = reverse(url_name)
     except Exception:
-        return ""
-    if request.path.startswith(url_path) and url_path != "/":
-        return "text-secondary-300 underline underline-offset-4"
-    if request.path == "/" and url_path == "/":
-        return "text-secondary-300 underline underline-offset-4"
-    return ""
+        return INACTIVE_CLS
+    is_active = (
+        (request.path == "/" and url_path == "/")
+        or (url_path != "/" and request.path.startswith(url_path))
+    )
+    return ACTIVE_CLS if is_active else INACTIVE_CLS

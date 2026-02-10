@@ -4,63 +4,67 @@
 
 {% block content %}
 {# -- Hero -- #}
-<section class="bg-primary-700 py-16 text-white">
-  <div class="mx-auto max-w-4xl px-4 text-center">
-    <h1 class="mb-4 text-4xl font-bold">Nos Projets</h1>
-    <p class="text-lg text-primary-200">Retrouvez l'ensemble de nos réalisations à travers le Niger</p>
+<section class="hero-gradient hero-pattern relative overflow-hidden py-20 text-white lg:py-24">
+  <div class="pointer-events-none absolute inset-0">
+    <div class="absolute -right-16 -top-16 h-56 w-56 rounded-full border border-white/10 animate-float"></div>
+    <div class="absolute -bottom-10 left-10 h-40 w-40 rounded-full border border-white/5" style="animation:float 8s ease-in-out 2s infinite"></div>
+  </div>
+  <div class="relative mx-auto max-w-4xl px-4 text-center">
+    <h1 class="mb-4 text-4xl font-extrabold tracking-tight animate-fade-up sm:text-5xl">Nos Réalisations</h1>
+    <p class="text-lg text-primary-100/90 animate-fade-up" style="animation-delay:200ms">Retrouvez l'ensemble de nos réalisations à travers le Niger</p>
   </div>
 </section>
 
 {# -- Category Filters + Grid -- #}
-<section class="py-16">
+<section class="py-20 lg:py-24">
   <div class="mx-auto max-w-7xl px-4 lg:px-8"
        x-data="{ active: '{{ current_category|default:'' }}' }">
 
     {# Filter buttons #}
-    <div class="mb-10 flex flex-wrap justify-center gap-3">
+    <div class="mb-12 flex flex-wrap justify-center gap-3" x-data x-intersect.once="$el.classList.add('animate-fade-up')">
       <button @click="active = ''"
-              :class="active === '' ? 'bg-primary-700 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-              class="rounded-full px-5 py-2 text-sm font-medium transition"
+              :class="active === '' ? 'bg-primary-700 text-white shadow-lg shadow-primary-700/20' : 'bg-white text-gray-700 border border-gray-200 hover:border-primary-300 hover:text-primary-700'"
+              class="rounded-full px-5 py-2.5 text-sm font-semibold transition"
               hx-get="/projets/"
               hx-target="#project-grid"
               hx-swap="innerHTML">
         Tous
       </button>
       <button @click="active = 'Routes'"
-              :class="active === 'Routes' ? 'bg-primary-700 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-              class="rounded-full px-5 py-2 text-sm font-medium transition"
+              :class="active === 'Routes' ? 'bg-primary-700 text-white shadow-lg shadow-primary-700/20' : 'bg-white text-gray-700 border border-gray-200 hover:border-primary-300 hover:text-primary-700'"
+              class="rounded-full px-5 py-2.5 text-sm font-semibold transition"
               hx-get="/projets/?category=Routes"
               hx-target="#project-grid"
               hx-swap="innerHTML">
         Routes et voiries
       </button>
       <button @click="active = 'Bâtiments'"
-              :class="active === 'Bâtiments' ? 'bg-primary-700 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-              class="rounded-full px-5 py-2 text-sm font-medium transition"
+              :class="active === 'Bâtiments' ? 'bg-primary-700 text-white shadow-lg shadow-primary-700/20' : 'bg-white text-gray-700 border border-gray-200 hover:border-primary-300 hover:text-primary-700'"
+              class="rounded-full px-5 py-2.5 text-sm font-semibold transition"
               hx-get="/projets/?category=B%C3%A2timents"
               hx-target="#project-grid"
               hx-swap="innerHTML">
         Bâtiments et structures
       </button>
       <button @click="active = 'Hydraulique'"
-              :class="active === 'Hydraulique' ? 'bg-primary-700 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-              class="rounded-full px-5 py-2 text-sm font-medium transition"
+              :class="active === 'Hydraulique' ? 'bg-primary-700 text-white shadow-lg shadow-primary-700/20' : 'bg-white text-gray-700 border border-gray-200 hover:border-primary-300 hover:text-primary-700'"
+              class="rounded-full px-5 py-2.5 text-sm font-semibold transition"
               hx-get="/projets/?category=Hydraulique"
               hx-target="#project-grid"
               hx-swap="innerHTML">
         Hydraulique et assainissement
       </button>
       <button @click="active = 'Aménagement'"
-              :class="active === 'Aménagement' ? 'bg-primary-700 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-              class="rounded-full px-5 py-2 text-sm font-medium transition"
+              :class="active === 'Aménagement' ? 'bg-primary-700 text-white shadow-lg shadow-primary-700/20' : 'bg-white text-gray-700 border border-gray-200 hover:border-primary-300 hover:text-primary-700'"
+              class="rounded-full px-5 py-2.5 text-sm font-semibold transition"
               hx-get="/projets/?category=Am%C3%A9nagement"
               hx-target="#project-grid"
               hx-swap="innerHTML">
         Aménagements urbains
       </button>
       <button @click="active = 'Études'"
-              :class="active === 'Études' ? 'bg-primary-700 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-              class="rounded-full px-5 py-2 text-sm font-medium transition"
+              :class="active === 'Études' ? 'bg-primary-700 text-white shadow-lg shadow-primary-700/20' : 'bg-white text-gray-700 border border-gray-200 hover:border-primary-300 hover:text-primary-700'"
+              class="rounded-full px-5 py-2.5 text-sm font-semibold transition"
               hx-get="/projets/?category=%C3%89tudes"
               hx-target="#project-grid"
               hx-swap="innerHTML">
@@ -76,12 +80,17 @@
 </section>
 
 {# -- CTA -- #}
-<section class="bg-gray-50 py-16">
-  <div class="mx-auto max-w-3xl px-4 text-center">
-    <h2 class="mb-4 text-2xl font-bold text-primary-700">Vous avez un projet ?</h2>
-    <p class="mb-6 text-gray-600">Contactez-nous pour discuter de vos besoins et obtenir un devis personnalisé.</p>
-    <a href="/contact/" class="inline-block rounded bg-secondary-700 px-6 py-2.5 text-sm font-medium text-white hover:bg-secondary-600">
+<section class="hero-gradient relative overflow-hidden py-16 lg:py-20">
+  <div class="pointer-events-none absolute inset-0">
+    <div class="absolute -right-10 top-0 h-40 w-40 rounded-full border border-white/10"></div>
+    <div class="absolute -left-10 bottom-0 h-56 w-56 rounded-full border border-white/5"></div>
+  </div>
+  <div class="relative mx-auto max-w-3xl px-4 text-center" x-data x-intersect.once="$el.classList.add('animate-fade-up')">
+    <h2 class="mb-4 text-2xl font-bold text-white sm:text-3xl">Vous avez un projet ?</h2>
+    <p class="mb-8 text-primary-100/90">Contactez-nous pour discuter de vos besoins et obtenir un devis personnalisé.</p>
+    <a href="/contact/" class="group inline-flex items-center gap-2 rounded-lg bg-white px-8 py-3 font-semibold text-primary-800 shadow-lg transition hover:bg-gray-50 hover:shadow-xl">
       Nous contacter
+      <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
     </a>
   </div>
 </section>

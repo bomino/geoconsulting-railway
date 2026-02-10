@@ -1,7 +1,13 @@
-<a href="{% url 'home' %}" class="hover:text-secondary-300">Accueil</a>
-<a href="/a-propos/" class="hover:text-secondary-300">À propos</a>
-<a href="/services/" class="hover:text-secondary-300">Services</a>
-<a href="/projets/" class="hover:text-secondary-300">Projets</a>
-<a href="/actualites/" class="hover:text-secondary-300">Actualités</a>
-<a href="/contact/" class="hover:text-secondary-300">Contact</a>
-<a href="/faq/" class="hover:text-secondary-300">FAQ</a>
+{% load core_tags %}
+{% active_nav 'home' as cls %}
+<a href="{% url 'home' %}" class="rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 {{ cls }}">Accueil</a>
+{% active_nav 'about' as cls %}
+<a href="/a-propos/" class="rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 {{ cls }}">Qui Sommes-Nous</a>
+{% active_nav 'services' as cls %}
+<a href="/services/" class="rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 {{ cls }}">Services</a>
+{% active_nav 'project_list' as cls %}
+<a href="/projets/" class="rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 {{ cls }}">Réalisations</a>
+{% active_nav 'article_list' as cls %}
+<a href="/actualites/" class="rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 {{ cls }}">Actualités</a>
+{% active_nav 'faq' as cls %}
+<a href="/faq/" class="rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 {{ cls }}">FAQ</a>

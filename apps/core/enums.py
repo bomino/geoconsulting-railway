@@ -27,6 +27,13 @@ class AccessLevel(models.TextChoices):
     EDIT = "edit", "Édition"
 
 
+class Department(models.TextChoices):
+    DIRECTION = "direction", "Direction Générale"
+    ETUDES = "etudes", "Bureau d'Études"
+    LABORATOIRE = "laboratoire", "Laboratoire"
+    ADMIN = "admin", "Administration"
+
+
 class TemplateCategory(models.TextChoices):
     QUOTE = "quote_request", "Demande de devis"
     INQUIRY = "project_inquiry", "Demande projet"

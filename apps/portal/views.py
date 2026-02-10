@@ -60,8 +60,8 @@ class PortalProjectView(ClientPortalMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context["documents"] = self.object.documents.all()
         if not self.request.user.is_staff:
-            context["access"] = ClientProject.objects.get(
-                user=self.request.user, project=self.object
+            context["access"] = get_object_or_404(
+                ClientProject, user=self.request.user, project=self.object
             )
         return context
 

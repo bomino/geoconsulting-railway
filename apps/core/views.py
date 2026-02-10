@@ -5,7 +5,8 @@ from django.http import Http404
 from django.views.generic import ListView, TemplateView
 
 from apps.articles.models import Article
-from apps.core.models import FAQ, FAQCategory, SiteSetting
+from apps.core.enums import Department
+from apps.core.models import FAQ, FAQCategory, SiteSetting, TeamMember
 from apps.projects.models import Project
 
 SERVICES = [
@@ -57,12 +58,9 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["featured_projects"] = (
-            Project.objects.filter(published=True)[:6]
-        )
-        context["latest_articles"] = (
-            Article.objects.filter(published=True)[:2]
-        )
+        context["featured_projects"] = Project.objects.filter(published=True)[:6]
+        context["latest_articles"] = Article.objects.filter(published=True)[:3]
+        context["project_count"] = Project.objects.filter(published=True).count()
         context["services"] = SERVICES
         return context
 
@@ -78,6 +76,17 @@ class AboutView(TemplateView):
         site_settings = {s.key: s for s in settings_qs}
         context["organigramme"] = site_settings.get("organigramme_image")
         context["politique_qualite"] = site_settings.get("politique_qualite_image")
+
+        team_members = TeamMember.objects.filter(published=True)
+        context["direction"] = [m for m in team_members if m.department == Department.DIRECTION]
+        departments = OrderedDict()
+        for member in team_members:
+            if member.department == Department.DIRECTION:
+                continue
+            label = Department(member.department).label
+            departments.setdefault(label, []).append(member)
+        context["departments"] = departments
+
         return context
 
 

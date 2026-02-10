@@ -17,11 +17,10 @@ def set_as_client(modeladmin, request, queryset):
     from django.contrib.auth.models import Group
 
     group, _ = Group.objects.get_or_create(name="clients")
-    admins_group = Group.objects.filter(name="admins").first()
+    admins_group, _ = Group.objects.get_or_create(name="admins")
     for user in queryset:
         user.groups.add(group)
-        if admins_group:
-            user.groups.remove(admins_group)
+        user.groups.remove(admins_group)
         user.is_staff = False
         user.save(update_fields=["is_staff"])
 
@@ -31,11 +30,10 @@ def set_as_admin(modeladmin, request, queryset):
     from django.contrib.auth.models import Group
 
     group, _ = Group.objects.get_or_create(name="admins")
-    clients_group = Group.objects.filter(name="clients").first()
+    clients_group, _ = Group.objects.get_or_create(name="clients")
     for user in queryset:
         user.groups.add(group)
-        if clients_group:
-            user.groups.remove(clients_group)
+        user.groups.remove(clients_group)
         user.is_staff = True
         user.save(update_fields=["is_staff"])
 

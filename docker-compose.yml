@@ -16,5 +16,23 @@ services:
       timeout: 5s
       retries: 5
 
+  web:
+    build: .
+    container_name: geoconsulting-web
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.development
+      DJANGO_SECRET_KEY: dev-docker-secret-key-not-for-production
+      DATABASE_URL: postgres://geo:geo@db:5432/geoconsulting
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,0.0.0.0
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+
 volumes:
   pgdata:
