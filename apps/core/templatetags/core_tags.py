@@ -40,3 +40,10 @@ def active_nav(context, url_name):
         or (url_path != "/" and request.path.startswith(url_path))
     )
     return ACTIVE_CLS if is_active else INACTIVE_CLS
+
+
+@register.filter(name="dict_get")
+def dict_get(d, key):
+    if isinstance(d, dict):
+        return d.get(key)
+    return None

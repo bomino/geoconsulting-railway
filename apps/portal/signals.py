@@ -1,8 +1,8 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 from apps.portal.models import ClientProject
-from apps.projects.models import ProjectDocument
+from apps.projects.models import Project, ProjectDocument
 
 
 @receiver(post_save, sender=ClientProject)
@@ -46,3 +46,48 @@ def on_document_uploaded(sender, instance, created, **kwargs):
             },
             recipient_list=recipient_emails,
         )
+
+
+@receiver(pre_save, sender=Project)
+def on_project_pre_save(sender, instance, **kwargs):
+    if instance.pk:
+        try:
+            instance._old_status = Project.objects.values_list("status", flat=True).get(pk=instance.pk)
+        except Project.DoesNotExist:
+            instance._old_status = None
+    else:
+        instance._old_status = None
+
+
+@receiver(post_save, sender=Project)
+def on_project_status_changed(sender, instance, created, **kwargs):
+    if created:
+        return
+    old_status = getattr(instance, "_old_status", None)
+    if old_status is None or old_status == instance.status:
+        return
+
+    from apps.core.services import send_notification
+
+    recipient_emails = list(
+        ClientProject.objects.filter(
+            project=instance
+        ).exclude(
+            user__email=""
+        ).values_list("user__email", flat=True)
+    )
+
+    if not recipient_emails:
+        return
+
+    send_notification(
+        subject=f"Projet mis a jour: {instance.title}",
+        template_name="status_changed",
+        context={
+            "project": instance,
+            "old_status": old_status,
+            "new_status": instance.get_status_display(),
+            "portal_url": "/portail/",
+        },
+        recipient_list=recipient_emails,
+    )

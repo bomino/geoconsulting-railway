@@ -2,7 +2,7 @@ import pytest
 
 from apps.accounts.factories import StaffUserFactory, UserFactory
 from apps.portal.factories import ClientProjectFactory
-from apps.portal.forms import MessageComposeForm
+from apps.portal.forms import ClientProfileForm, MessageComposeForm, ProjectCommentForm
 from apps.projects.factories import ProjectFactory
 
 
@@ -59,3 +59,36 @@ class TestMessageComposeForm:
             data={"to_user": recipient.pk, "subject": "Test", "content": "Bonjour"},
         )
         assert form.is_valid()
+
+
+@pytest.mark.django_db
+class TestProjectCommentForm:
+    def test_valid(self):
+        form = ProjectCommentForm(data={"content": "Mon commentaire"})
+        assert form.is_valid()
+
+    def test_empty_invalid(self):
+        form = ProjectCommentForm(data={"content": ""})
+        assert not form.is_valid()
+
+
+@pytest.mark.django_db
+class TestClientProfileForm:
+    def test_loads_user_names(self):
+        user = UserFactory(first_name="Ali", last_name="Moussa")
+        form = ClientProfileForm(instance=user.profile)
+        assert form.fields["first_name"].initial == "Ali"
+        assert form.fields["last_name"].initial == "Moussa"
+
+    def test_saves_user_and_profile(self):
+        user = UserFactory()
+        form = ClientProfileForm(
+            instance=user.profile,
+            data={"first_name": "Jean", "last_name": "Dupont", "phone": "+227 99"},
+        )
+        assert form.is_valid()
+        profile = form.save()
+        user.refresh_from_db()
+        assert user.first_name == "Jean"
+        assert user.last_name == "Dupont"
+        assert profile.phone == "+227 99"

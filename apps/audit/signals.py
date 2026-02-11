@@ -34,10 +34,10 @@ def register_audit_signals():
     from apps.articles.models import Article
     from apps.contacts.models import Contact
     from apps.crm.models import AssignmentRule, EmailTemplate
-    from apps.portal.models import ClientProject, Message
+    from apps.portal.models import ClientProject, Message, ProjectComment
     from apps.projects.models import Project
 
-    models = [Project, Article, Contact, ClientProject, Message, EmailTemplate, AssignmentRule]
+    models = [Project, Article, Contact, ClientProject, Message, ProjectComment, EmailTemplate, AssignmentRule]
     for model in models:
         post_save.connect(_on_save, sender=model, dispatch_uid=f"audit_save_{model.__name__}")
         post_delete.connect(_on_delete, sender=model, dispatch_uid=f"audit_delete_{model.__name__}")

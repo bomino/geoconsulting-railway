@@ -159,6 +159,9 @@ CACHES = {
     }
 }
 
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Lax"
+
 UNFOLD = {
     "SITE_TITLE": "GeoConsulting Admin",
     "SITE_HEADER": "GeoConsulting",

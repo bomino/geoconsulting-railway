@@ -1,0 +1,11 @@
+Mise a jour du projet
+
+Le statut du projet "{{ project.title }}" a ete mis a jour :
+
+Projet: {{ project.title }}
+Ancien statut: {{ old_status }}
+Nouveau statut: {{ new_status }}
+
+Acceder au portail: {{ portal_url }}
+
+Ce message a ete envoye automatiquement par GeoConsulting.

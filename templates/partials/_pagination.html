@@ -1,0 +1,21 @@
+{% if is_paginated %}
+<nav class="mt-6 flex items-center justify-between" aria-label="Pagination">
+  <p class="text-sm text-gray-500">
+    Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
+  </p>
+  <div class="flex gap-2">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}"
+         class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50">
+        &laquo; Precedent
+      </a>
+    {% endif %}
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}"
+         class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50">
+        Suivant &raquo;
+      </a>
+    {% endif %}
+  </div>
+</nav>
+{% endif %}

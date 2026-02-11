@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+  <h2 style="color: #1B3A6B;">Mise a jour du projet</h2>
+  <p>Le statut du projet <strong>{{ project.title }}</strong> a ete mis a jour :</p>
+  <table style="width: 100%; border-collapse: collapse;">
+    <tr><td style="padding: 8px; font-weight: bold;">Projet:</td><td style="padding: 8px;">{{ project.title }}</td></tr>
+    <tr><td style="padding: 8px; font-weight: bold;">Ancien statut:</td><td style="padding: 8px;">{{ old_status }}</td></tr>
+    <tr><td style="padding: 8px; font-weight: bold;">Nouveau statut:</td><td style="padding: 8px;">{{ new_status }}</td></tr>
+  </table>
+  <p style="margin-top: 24px;">
+    <a href="{{ portal_url }}" style="display: inline-block; background: #1B3A6B; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 4px;">
+      Acceder au portail
+    </a>
+  </p>
+  <p style="margin-top: 24px; color: #666; font-size: 12px;">
+    Ce message a ete envoye automatiquement par GeoConsulting.
+  </p>
+</body>
+</html>
