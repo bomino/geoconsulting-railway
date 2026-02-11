@@ -4,6 +4,7 @@ __pycache__/
 *.pyc
 *.pyo
 .env
+.env.*
 .git/
 media/
 staticfiles/
@@ -12,3 +13,7 @@ staticfiles/
 .coverage
 htmlcov/
 *.sqlite3
+.claude/
+docs/
+*.md
+!requirements/*.txt
