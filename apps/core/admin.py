@@ -21,7 +21,11 @@ class FAQAdmin(ModelAdmin):
 class SiteSettingAdmin(ModelAdmin):
     list_display = ("key", "updated_at")
     search_fields = ("key",)
-    readonly_fields = ("key",)
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ("key",)
+        return ()
 
 
 @admin.register(Department)
