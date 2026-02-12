@@ -142,7 +142,7 @@ PASSWORD_HASHERS = [
 CONTENT_SECURITY_POLICY = {
     "DIRECTIVES": {
         "default-src": ["'self'"],
-        "script-src": ["'self'", "cdn.jsdelivr.net"],
+        "script-src": ["'self'", "'unsafe-eval'", "cdn.jsdelivr.net"],
         "style-src": ["'self'", "'unsafe-inline'", "fonts.googleapis.com"],
         "img-src": ["'self'", "data:", "blob:"],
         "font-src": ["'self'", "fonts.gstatic.com"],
