@@ -26,20 +26,28 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
-STORAGES = {
-    "default": {
+_r2_account_id = env("R2_ACCOUNT_ID", default="")
+if _r2_account_id:
+    _default_storage = {
         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
         "OPTIONS": {
             "access_key": env("R2_ACCESS_KEY_ID", default=""),
             "secret_key": env("R2_SECRET_ACCESS_KEY", default=""),
             "bucket_name": env("R2_BUCKET", default="geoconsulting-files"),
-            "endpoint_url": f"https://{env('R2_ACCOUNT_ID', default='')}.r2.cloudflarestorage.com",
+            "endpoint_url": f"https://{_r2_account_id}.r2.cloudflarestorage.com",
             "default_acl": "private",
             "file_overwrite": False,
             "querystring_auth": True,
             "querystring_expire": 3600,
         },
-    },
+    }
+else:
+    _default_storage = {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    }
+
+STORAGES = {
+    "default": _default_storage,
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },

@@ -171,14 +171,15 @@ class TeamMember(TimestampMixin):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if self.photo:
-            img = Image.open(self.photo.path)
-            if img.width > TEAM_PHOTO_MAX_SIZE or img.height > TEAM_PHOTO_MAX_SIZE:
-                img.thumbnail((TEAM_PHOTO_MAX_SIZE, TEAM_PHOTO_MAX_SIZE), Image.LANCZOS)
-                buf = BytesIO()
-                fmt = "JPEG" if self.photo.name.lower().endswith((".jpg", ".jpeg")) else "PNG"
-                img.save(buf, format=fmt, quality=85)
-                self.photo.save(self.photo.name, ContentFile(buf.getvalue()), save=False)
-                super().save(update_fields=["photo"])
+            with self.photo.storage.open(self.photo.name) as f:
+                img = Image.open(f)
+                if img.width > TEAM_PHOTO_MAX_SIZE or img.height > TEAM_PHOTO_MAX_SIZE:
+                    img.thumbnail((TEAM_PHOTO_MAX_SIZE, TEAM_PHOTO_MAX_SIZE), Image.LANCZOS)
+                    buf = BytesIO()
+                    fmt = "JPEG" if self.photo.name.lower().endswith((".jpg", ".jpeg")) else "PNG"
+                    img.save(buf, format=fmt, quality=85)
+                    self.photo.save(self.photo.name, ContentFile(buf.getvalue()), save=False)
+                    super().save(update_fields=["photo"])
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
