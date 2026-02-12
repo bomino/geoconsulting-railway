@@ -1,8 +1,8 @@
 from django.conf import settings
-from django.conf.urls.static import static
 from django.contrib import admin
 from django.http import JsonResponse
-from django.urls import include, path
+from django.urls import include, path, re_path
+from django.views.static import serve as static_serve
 
 from apps.core.views import HomeView
 from apps.core.views_admin import admin_guide_view
@@ -34,4 +34,10 @@ if settings.DEBUG:
 if not hasattr(settings, "STORAGES") or settings.STORAGES.get("default", {}).get(
     "BACKEND"
 ) == "django.core.files.storage.FileSystemStorage":
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += [
+        re_path(
+            r"^media/(?P<path>.*)$",
+            static_serve,
+            {"document_root": settings.MEDIA_ROOT},
+        ),
+    ]
