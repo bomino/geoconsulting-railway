@@ -30,4 +30,8 @@ if settings.DEBUG:
         ] + urlpatterns
     except ImportError:
         pass
+
+if not hasattr(settings, "STORAGES") or settings.STORAGES.get("default", {}).get(
+    "BACKEND"
+) == "django.core.files.storage.FileSystemStorage":
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
