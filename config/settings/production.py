@@ -36,6 +36,8 @@ if _r2_account_id:
             "secret_key": env("R2_SECRET_ACCESS_KEY", default=""),
             "bucket_name": env("R2_BUCKET", default="geoconsulting-files"),
             "endpoint_url": _r2_origin,
+            "region_name": "auto",
+            "signature_version": "s3v4",
             "default_acl": "private",
             "file_overwrite": False,
             "querystring_auth": True,

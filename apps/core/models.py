@@ -1,3 +1,4 @@
+import posixpath
 from io import BytesIO
 
 from django.conf import settings
@@ -178,7 +179,8 @@ class TeamMember(TimestampMixin):
                     buf = BytesIO()
                     fmt = "JPEG" if self.photo.name.lower().endswith((".jpg", ".jpeg")) else "PNG"
                     img.save(buf, format=fmt, quality=85)
-                    self.photo.save(self.photo.name, ContentFile(buf.getvalue()), save=False)
+                    basename = posixpath.basename(self.photo.name)
+                    self.photo.save(basename, ContentFile(buf.getvalue()), save=False)
                     super().save(update_fields=["photo"])
 
     def __str__(self):
