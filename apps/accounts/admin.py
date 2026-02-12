@@ -1,11 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from unfold.admin import ModelAdmin
+from django.utils.translation import gettext_lazy as _
+from unfold.admin import ModelAdmin, StackedInline
 
 from apps.accounts.models import Profile, User
 
 
-class ProfileInline(admin.StackedInline):
+class ProfileInline(StackedInline):
     model = Profile
     can_delete = False
     fields = ("phone", "avatar")
@@ -62,9 +63,25 @@ def restore_selected(modeladmin, request, queryset):
 
 @admin.register(User)
 class UserAdmin(ModelAdmin, BaseUserAdmin):
+    add_fieldsets = (
+        (None, {
+            "classes": ("wide",),
+            "fields": ("email", "username", "password1", "password2"),
+        }),
+    )
+    fieldsets = (
+        (None, {"fields": ("username", "password")}),
+        (_("Informations personnelles"), {"fields": ("first_name", "last_name", "email")}),
+        (_("Permissions"), {
+            "fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions"),
+        }),
+        (_("Dates"), {"fields": ("last_login", "date_joined")}),
+        (_("Suppression douce"), {"fields": ("is_deleted", "deleted_at")}),
+    )
+    readonly_fields = ("is_deleted", "deleted_at", "last_login", "date_joined")
     list_display = (
-        "username",
         "email",
+        "username",
         "first_name",
         "last_name",
         "role_display",
@@ -74,6 +91,7 @@ class UserAdmin(ModelAdmin, BaseUserAdmin):
     )
     list_filter = ("groups", "is_staff", "is_active", "is_deleted")
     search_fields = ("username", "email", "first_name", "last_name")
+    ordering = ("-date_joined",)
     inlines = [ProfileInline]
     actions = [set_as_client, set_as_admin, set_as_guest, soft_delete_selected, restore_selected]
 
