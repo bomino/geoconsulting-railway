@@ -63,6 +63,13 @@ class HomeView(TemplateView):
         context["latest_articles"] = Article.objects.filter(published=True)[:3]
         context["project_count"] = Project.objects.filter(published=True).count()
         context["services"] = SERVICES
+        context["director"] = (
+            TeamMember.objects.filter(
+                department__is_direction=True, published=True
+            )
+            .select_related("department")
+            .first()
+        )
         return context
 
 
