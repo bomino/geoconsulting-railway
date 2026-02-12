@@ -1,12 +1,14 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.http import JsonResponse
 from django.urls import include, path
 
 from apps.core.views import HomeView
 from apps.core.views_admin import admin_guide_view
 
 urlpatterns = [
+    path("healthz/", lambda r: JsonResponse({"status": "ok"})),
     path("", HomeView.as_view(), name="home"),
     path("admin/guide/", admin_guide_view, name="admin_guide"),
     path("admin/", admin.site.urls),
